@@ -1,4 +1,4 @@
-import { ComponentProps, FC, Fragment, useMemo } from 'react'
+import { ComponentProps, FC, Fragment, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import clsx from 'clsx'
 import { Popover, Portal, Transition } from '@headlessui/react'
@@ -59,107 +59,114 @@ export function useHeaderHeight(): number {
 
 const MenuPopover: FC = () => {
   const [t] = useTranslation('common', { keyPrefix: 'navigation' })
+  const [openMenuPanel, setOpenMenuPanel] = useState<boolean>(false)
+
   return (
-    <Popover className={styles.menuPopover}>
-      {({ close }) => (
-        <>
-          <Popover.Button as={'div'} className={clsx(styles.trigger, DISABLE_CGOL_MOUSE_CONTROLLER)}>
-            <MenuIcon />
-            <span className={styles.text}>MENU</span>
-          </Popover.Button>
+    <div className={styles.menuPopover}>
+          <>
+            <div onClick={() => setOpenMenuPanel(!openMenuPanel)} className={clsx(styles.trigger, DISABLE_CGOL_MOUSE_CONTROLLER)}>
+              <MenuIcon />
+              <span className={styles.text}>MENU</span>
+            </div>
+            {openMenuPanel && <div className={styles.menuPopoverOverlay} onClick={() => setOpenMenuPanel(false)}/>}
 
-          {/* Use Portal to prevent being influenced by mix-blend-mode */}
-          <Portal>
-            <Transition
-              as={Fragment}
-              enter={styles.enter}
-              enterFrom={styles.enterFrom}
-              enterTo={styles.enterTo}
-              leave={styles.leave}
-              leaveFrom={styles.leaveFrom}
-              leaveTo={styles.leaveTo}
-            >
-              <Popover.Panel className={styles.menuPopoverContent}>
-                <div className={styles.menu}>
-                  <StyledLink href="/developers" className={styles.title}>
-                    <CodeIcon />
-                    {t('developers')}
-                  </StyledLink>
-                  <div className={styles.links}>
-                    <StyledLink href="https://docs.nervos.org/" className={styles.link}>
-                      {t('docs')}
+            {/* Use Portal to prevent being influenced by mix-blend-mode */}
+            <Portal>
+              <Transition
+                show={openMenuPanel}
+                as={Fragment}
+                enter={styles.enter}
+                enterFrom={styles.enterFrom}
+                enterTo={styles.enterTo}
+                leave={styles.leave}
+                leaveFrom={styles.leaveFrom}
+                leaveTo={styles.leaveTo}
+              >
+            {openMenuPanel ? 
+                <div className={styles.menuPopoverContent}>
+                  <div className={styles.menu}>
+                    <StyledLink href="/developers" className={styles.title}>
+                      <CodeIcon />
+                      {t('developers')}
                     </StyledLink>
-                    <StyledLink href="https://github.com/nervosnetwork/" className={styles.link}>
-                      {t('github')}
-                    </StyledLink>
-                    <StyledLink href="https://explorer.nervos.org/" className={styles.link}>
-                      {t('explorer')}
-                    </StyledLink>
+                    <div className={styles.links}>
+                      <StyledLink href="https://docs.nervos.org/" className={styles.link}>
+                        {t('docs')}
+                      </StyledLink>
+                      <StyledLink href="https://github.com/nervosnetwork/" className={styles.link}>
+                        {t('github')}
+                      </StyledLink>
+                      <StyledLink href="https://explorer.nervos.org/" className={styles.link}>
+                        {t('explorer')}
+                      </StyledLink>
+                    </div>
                   </div>
-                </div>
-
-                <div className={styles.menu}>
-                  <StyledLink href="/community" className={styles.title}>
-                    <CommunityIcon />
-                    {t('community')}
-                  </StyledLink>
-                  <div className={styles.links}>
-                    <StyledLink href="https://dao.ckb.community/" className={styles.link}>
-                      <div>
-                        {t('community_fund_dao')
-                          .split('\n')
-                          .map(p => (
-                            <div key={p}>{p}</div>
-                          ))}
-                      </div>
+  
+                  <div className={styles.menu}>
+                    <StyledLink href="/community" className={styles.title}>
+                      <CommunityIcon />
+                      {t('community')}
                     </StyledLink>
-                    <StyledLink href="https://talk.nervos.org/" className={styles.link}>
-                      {t('forum')}
-                    </StyledLink>
-                    <StyledLink href="https://github.com/nervosnetwork/rfcs" className={styles.link}>
-                      {t('rfcs')}
-                    </StyledLink>
+                    <div className={styles.links}>
+                      <StyledLink href="https://dao.ckb.community/" className={styles.link}>
+                        <div>
+                          {t('community_fund_dao')
+                            .split('\n')
+                            .map(p => (
+                              <div key={p}>{p}</div>
+                            ))}
+                        </div>
+                      </StyledLink>
+                      <StyledLink href="https://talk.nervos.org/" className={styles.link}>
+                        {t('forum')}
+                      </StyledLink>
+                      <StyledLink href="https://github.com/nervosnetwork/rfcs" className={styles.link}>
+                        {t('rfcs')}
+                      </StyledLink>
+                    </div>
                   </div>
-                </div>
-
-                <div className={styles.menu}>
-                  <StyledLink href="/ckbpage" className={styles.title}>
-                    <CircleIcon />
-                    CKB <span className={styles.ckbHint}>(Token)</span>
-                  </StyledLink>
-                  <div className={styles.links}>
-                    <StyledLink href="/mining" className={styles.link}>
-                      {t('mining')}
+  
+                  <div className={styles.menu}>
+                    <StyledLink href="/ckbpage" className={styles.title}>
+                      <CircleIcon />
+                      CKB <span className={styles.ckbHint}>(Token)</span>
                     </StyledLink>
-                    <StyledLink href="/wallets" className={styles.link}>
-                      {t('wallets')}
-                    </StyledLink>
+                    <div className={styles.links}>
+                      <StyledLink href="/mining" className={styles.link}>
+                        {t('mining')}
+                      </StyledLink>
+                      <StyledLink href="/wallets" className={styles.link}>
+                        {t('wallets')}
+                      </StyledLink>
+                    </div>
                   </div>
-                </div>
-
-                <div className={styles.menu}>
-                  <StyledLink className={styles.title} href="/learn">
-                    <LearnIcon />
-                    {t('learn')}
-                  </StyledLink>
-                  <div className={styles.links}>
-                    <StyledLink href="/knowledge-base" className={styles.link}>
-                      {t('knowledge_base')}
+  
+                  <div className={styles.menu}>
+                    <StyledLink className={styles.title} href="/learn">
+                      <LearnIcon />
+                      {t('learn')}
                     </StyledLink>
-                    <StyledLink href="https://medium.com/nervosnetwork" className={styles.link}>
-                      {t('medium')}
-                    </StyledLink>
-                    <StyledLink href="https://www.youtube.com/c/NervosNetwork" className={styles.link}>
-                      {t('youtube')}
-                    </StyledLink>
+                    <div className={styles.links}>
+                      <StyledLink href="/knowledge-base" className={styles.link}>
+                        {t('knowledge_base')}
+                      </StyledLink>
+                      <StyledLink href="https://medium.com/nervosnetwork" className={styles.link}>
+                        {t('medium')}
+                      </StyledLink>
+                      <StyledLink href="https://www.youtube.com/c/NervosNetwork" className={styles.link}>
+                        {t('youtube')}
+                      </StyledLink>
+                    </div>
                   </div>
-                </div>
-              </Popover.Panel>
-            </Transition>
-          </Portal>
-        </>
-      )}
-    </Popover>
+                </div> 
+                : 
+                // null is not allowed in Transition, so use <div/> instead when menu is closed
+                <div/>
+              }
+              </Transition>
+            </Portal>
+          </>
+    </div>
   )
 }
 

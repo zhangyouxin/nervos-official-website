@@ -87,11 +87,23 @@ $defaultHeaderHeight: 90px;
   }
 }
 
+// an overlay on pagecontent, and under the menu popover
+// clicking the overlay will close menu popover
+.menuPopoverOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 98vw;
+  height: 100vh;
+  background-color: transparent;
+}
+
 // Because Portal is used, it is no longer a child of header
 .menuPopoverContent {
   position: fixed;
   top: 26px;
-  z-index: 2;
+  z-index: 3;
   display: grid;
   grid-template-columns: repeat(auto-fill, 150px);
   gap: 5px;

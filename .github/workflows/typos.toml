@@ -1,0 +1,2 @@
+[type.po]
+extend-exclude = ["*.png", "**/*.png"]

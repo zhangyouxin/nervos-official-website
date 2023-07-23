@@ -1,2 +1,2 @@
 [type.po]
-extend-exclude = ["*.png", "**/*.png"]
+extend-exclude = ["src/*.png"]

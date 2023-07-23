@@ -1,2 +1,3 @@
 [type.po]
-extend-exclude = ["src/*.png"]
+extend-glob = ["*.png"]
+check-file = false

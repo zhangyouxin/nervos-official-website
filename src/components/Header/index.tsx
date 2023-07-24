@@ -60,11 +60,20 @@ export function useHeaderHeight(): number {
 const MenuPopover: FC = () => {
   const [t] = useTranslation('common', { keyPrefix: 'navigation' })
   const [openMenuPanel, setOpenMenuPanel] = useState<boolean>(false)
+  const [count, setCount] = useState<number>(0)
+
+  const handleOpenMenuPanel = () => {
+    console.log('handleOpenMenuPanel');
+    setCount(count+1)
+    setOpenMenuPanel(true)
+  }
 
   return (
     <div className={styles.menuPopover}>
           <>
-            <div onClick={() => setOpenMenuPanel(!openMenuPanel)} className={clsx(styles.trigger, DISABLE_CGOL_MOUSE_CONTROLLER)}>
+          {count}
+           {openMenuPanel ? 'true' : 'false'}
+            <div onClick={handleOpenMenuPanel} className={clsx(styles.trigger, DISABLE_CGOL_MOUSE_CONTROLLER)} style={{ background: 'red' }}>
               <MenuIcon />
               <span className={styles.text}>MENU</span>
             </div>

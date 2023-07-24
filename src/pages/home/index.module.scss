@@ -15,6 +15,8 @@ $headerZ: 2;
 }
 
 .swiper {
+  display: none;
+
   // If the height is not set, there is a chance that the default slide will be
   // random instead of the first one when the page is initialized, which may be
   // related to the Swiper's autoHeight or cssMode properties.
